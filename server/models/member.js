@@ -13,7 +13,7 @@ export const listAllMembers = async () => {
       .filter(
         (member) => !(member.parent !== null && member.children.length === 0)
       );
-    return modifiedMembers;
+    return { members: modifiedMembers, list: members.rows };
   } else {
     throw new Error({ message: "No data found" });
   }

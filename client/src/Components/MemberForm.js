@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import TextField from "@mui/material/TextField";
-import CustomeDialog from "./CustomDialog";
-import { useModalState } from "../utils/hooks";
 import {
   Box,
   Button,
@@ -10,35 +9,46 @@ import {
   MenuItem,
   Select,
 } from "@mui/material";
+import { useModalState } from "../utils/hooks";
+import { addMemberAction, updateMemberAction } from "../appRedux/actions";
+  import CustomeDialog from "./CustomDialog";
 
-const MemberForm = ({ data, isEdit }) => {
-  const [formData, setFormData] = useState({ name: "", age: "", parent: "" });
+const MemberForm = ({ data, isEdit, Trigger }) => {
+  const selectList = useSelector((state) => state.selectList);
   const { showModal, toggleCreateModal } = useModalState();
+  const [formData, setFormData] = useState({ name: "", age: "", parent: null });
 
   const handleChange = (e) => {
     setFormData((p) => ({ ...p, [e.target.name]: e.target.value }));
   };
 
-  const handleSubmit = () => {};
-
-  useEffect(() => {
-    if (!showModal) {
-      setFormData({ name: "", age: "", parent: "" });
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (isEdit) {
+      dispatch(updateMemberAction(formData));
+    } else {
+      dispatch(addMemberAction(formData));
     }
-  }, [showModal]);
+  };
 
   useEffect(() => {
     if (isEdit) {
-      setFormData(data);
+      if (!showModal) {
+        setFormData({ name: "", age: "", parent: "" });
+      } else {
+        setFormData(data);
+      }
     }
-  }, [isEdit]);
+  }, [isEdit, showModal]);
 
   return (
     <>
-      <Button variant="outlined" onClick={toggleCreateModal}>
-        Create Member
-      </Button>
-      <CustomeDialog open={showModal} title="Create Member" c>
+      <Trigger onClick={toggleCreateModal} />
+      <CustomeDialog
+        open={showModal}
+        title={isEdit ? "Edit Member" : "Create Member"}
+        close={toggleCreateModal}
+      >
         <form onSubmit={handleSubmit}>
           <Box mt={2}>
             <TextField
@@ -48,6 +58,7 @@ const MemberForm = ({ data, isEdit }) => {
               fullWidth
               onChange={handleChange}
               variant="standard"
+              required
             />
           </Box>
           <Box mt={2}>
@@ -59,10 +70,11 @@ const MemberForm = ({ data, isEdit }) => {
               fullWidth
               onChange={handleChange}
               variant="standard"
+              required
             />
           </Box>
           <Box mt={2}>
-            <FormControl fullWidth>
+            <FormControl fullWidth margin="dense" variant="standard">
               <InputLabel id="age-label">Parent</InputLabel>
               <Select
                 value={formData.parent}
@@ -70,17 +82,20 @@ const MemberForm = ({ data, isEdit }) => {
                 variant="standard"
                 labelId="age-label"
                 name="parent"
-                InputLabelProps={{ shrink: true }}
                 fullWidth
               >
-                <MenuItem value="">--Select Parent--</MenuItem>
-                <MenuItem value={10}>Ten</MenuItem>
-                <MenuItem value={20}>Twenty</MenuItem>
-                <MenuItem value={30}>Thirty</MenuItem>
+                <MenuItem value={""}> --Select Parent-- </MenuItem>
+                {selectList.map((member) => (
+                  <MenuItem value={member.id}>{member.name}</MenuItem>
+                ))}
               </Select>
             </FormControl>
           </Box>
-          <Button type="submit">Submit</Button>
+          <Box mt={2} textAlign="right">
+            <Button type="submit" variant="contained">
+              Submit
+            </Button>
+          </Box>
         </form>
       </CustomeDialog>
     </>

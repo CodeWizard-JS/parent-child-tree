@@ -1,9 +1,7 @@
 import React from "react";
 import Dialog from "@mui/material/Dialog";
-import DialogContent from "@mui/material/DialogContent";
-import DialogTitle from "@mui/material/DialogTitle";
-import CancelOutlinedIcon from "@mui/icons-material/CancelOutlined";
-import { Box, Container, IconButton, Typography } from "@mui/material";
+import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
+import { Box, IconButton, Typography } from "@mui/material";
 
 export default function CustomeDialog({ title, close, open, children }) {
   return (
@@ -19,7 +17,7 @@ export default function CustomeDialog({ title, close, open, children }) {
               close()
             }}
           >
-          <CancelOutlinedIcon color="primary" />
+          <CloseRoundedIcon color="primary" />
           </IconButton>
         </Box>
         {children}

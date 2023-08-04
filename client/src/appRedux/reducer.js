@@ -1,17 +1,26 @@
 import * as types from "./actionTypes";
 
-const initialState = { members: [], error: null };
+const initialState = { members: [], error: null, selectList: [] };
 
 export default function reducer(state = initialState, action) {
   switch (action.type) {
     case types.FETCH_SUCCESS: {
-      return { ...state, members: action.payload, error: null };
+      return {
+        ...state,
+        members: action.payload.members,
+        selectList: action.payload.list,
+        error: null,
+      };
     }
     case types.FETCH_FAILURE: {
       return { ...state, error: action.error };
     }
     case types.ADD_SUCCESS: {
-      return { ...state, members: [...state.members, action.payload] };
+      return {
+        ...state,
+        members: [...state.members, action.payload],
+        error: null,
+      };
     }
     case types.ADD_FAILURE: {
       return { ...state, error: action.error };
@@ -23,7 +32,7 @@ export default function reducer(state = initialState, action) {
         }
         return member;
       });
-      return { ...state, members: updatedMembersList };
+      return { ...state, members: updatedMembersList, error: null };
     }
     case types.UPDATE_FAILURE: {
       return { ...state, error: action.error };
@@ -32,7 +41,7 @@ export default function reducer(state = initialState, action) {
       const updatedMembersList = members.filter(
         (member) => member.id !== action.payload.id
       );
-      return { ...state, members: updatedMembersList };
+      return { ...state, members: updatedMembersList, error: null };
     }
     case types.DELETE_FAILURE: {
       return { ...state, error: action.error };

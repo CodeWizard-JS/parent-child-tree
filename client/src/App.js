@@ -1,7 +1,8 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Card } from "@mui/material";
+import { Button, Card } from "@mui/material";
 import { AppBar, Toolbar, Typography } from "@mui/material";
+import PersonAddRoundedIcon from "@mui/icons-material/PersonAddRounded";
 import Accordions from "./Components/Accordion";
 import { getAllMembersAction } from "./appRedux/actions";
 import CreateForm from "./Components/MemberForm";
@@ -13,6 +14,18 @@ const App = () => {
   useEffect(() => {
     dispatch(getAllMembersAction());
   }, []);
+
+  const createFormTrigger = ({ onClick }) => {
+    return (
+      <Button
+        variant="contained"
+        onClick={onClick}
+        startIcon={<PersonAddRoundedIcon />}
+      >
+        Create Member
+      </Button>
+    );
+  };
 
   return (
     <div className="parent-wrapper">
@@ -28,7 +41,7 @@ const App = () => {
           <Typography variant="h6" style={{ flexGrow: 1 }} ml={2}>
             Family Tree View
           </Typography>
-          <CreateForm />
+          <CreateForm Trigger={createFormTrigger} />
         </Toolbar>
       </AppBar>
       <div className="inner-container">
@@ -37,16 +50,9 @@ const App = () => {
             Members List
           </Typography>
           <div className="data-container">
-            {allMembers.map(({ name, children, age, id }) => {
-              return (
-                <Accordions
-                  name={name}
-                  age={age}
-                  childrenData={children}
-                  key={id}
-                />
-              );
-            })}
+            {allMembers.map((member) => (
+              <Accordions member={member} key={member.id} />
+            ))}
           </div>
         </Card>
       </div>

@@ -31,7 +31,9 @@ body,
 }
 
 form,
-.data-container {
+.data-container,
+.accordian,
+.delete-modal-wrapper {
   min-width: 300px;
   width: 500px;
 }
