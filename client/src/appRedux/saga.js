@@ -4,8 +4,8 @@ import * as types from "./actionTypes";
 
 function* getAllMembers() {
   try {
-    const items = yield call(effects.getAllMembersAPIEffect);
-    yield put({ type: types.FETCH_SUCCESS, payload: items });
+    const members = yield call(effects.getAllMembersAPIEffect);
+    yield put({ type: types.FETCH_SUCCESS, payload: members });
   } catch (err) {
     yield put({ type: types.FETCH_FAILURE, error: err });
   }

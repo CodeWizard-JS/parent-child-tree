@@ -16,11 +16,24 @@ export default function reducer(state = initialState, action) {
     case types.ADD_FAILURE: {
       return { ...state, error: action.error };
     }
-    case types.UPDATE_SUCCESS:
+    case types.UPDATE_SUCCESS: {
+      const updatedMembersList = members.map((member) => {
+        if (member.id === action.payload.id) {
+          return action.payload;
+        }
+        return member;
+      });
+      return { ...state, members: updatedMembersList };
+    }
     case types.UPDATE_FAILURE: {
       return { ...state, error: action.error };
     }
-    case types.DELETE_SUCCESS:
+    case types.DELETE_SUCCESS: {
+      const updatedMembersList = members.filter(
+        (member) => member.id !== action.payload.id
+      );
+      return { ...state, members: updatedMembersList };
+    }
     case types.DELETE_FAILURE: {
       return { ...state, error: action.error };
     }

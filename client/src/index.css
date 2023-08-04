@@ -1,6 +1,37 @@
-.app_card {
-  width: 50%;
-  margin: auto;
+body {
+  margin: 0;
+  padding: 0;
+}
+html,
+body,
+#root,
+.parent-wrapper {
+  height: 100%;
+}
+
+.parent-wrapper,
+.inner-container,
+.member-datils {
+  display: flex;
+}
+
+.inner-container,
+.member-details {
+  justify-content: center;
+  align-items: center;
+}
+
+.parent-wrapper {
+  flex-direction: column;
+}
+
+.inner-container {
+  margin-top: 10px;
+  flex-grow: 1;
+}
+
+form,
+.data-container {
   min-width: 300px;
-  border: 1px solid black;
+  width: 500px;
 }
