@@ -16,7 +16,7 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use(cors());
 
-app.use("/family/", familyRouter);
+app.use("/family", familyRouter);
 
 app.listen(port, async () => {
   try {
