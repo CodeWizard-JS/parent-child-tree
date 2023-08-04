@@ -1,4 +1,4 @@
-import * as member from '../models/index.js'
+import * as member from "../models/index.js";
 
 export const listAllMembers = async (req, res) => {
   try {
@@ -12,30 +12,33 @@ export const listAllMembers = async (req, res) => {
 
 export const createMember = async (req, res) => {
   try {
-    const result = await member.createMember();
-    res.json("Inserted successfully");
+    const result = await member.createMember(req.body);
+    res.json({ success: 1, message: "Inserted successfully", data: result });
   } catch (error) {
     console.log("createMember-error", error.message);
-    res.status(500).json({ error: error.message });
+    res.status(500).json({ success: 0, message: error.message });
   }
 };
 
 export const updateMember = async (req, res) => {
   try {
-    const result = await member.updateMember();
-    res.json("Updated successfully");
+    const result = await member.updateMember({
+      id: req.params.id,
+      ...req.body,
+    });
+    res.json({ success: 1, message: "Updated successfully", data: result });
   } catch (error) {
-    console.log("updateMember-error", error.message);
-    res.status(500).json({ error: error.message });
+    console.log("updateMember-error", error);
+    res.status(500).json({ success: 0, message: error.message });
   }
 };
 
 export const deleteMember = async (req, res) => {
   try {
-    const result = await member.deleteMember();
-    res.json("Deleted successfully");
+    const result = await member.deleteMember(req.params.id);
+    res.json({ success: 1, message: "Deleted successfully", data: result });
   } catch (error) {
-    console.log("deleteTodo-error", error.message);
-    res.status(500).json({ error: error.message });
+    console.log("deleteMember-error", error.message);
+    res.status(500).json({ success: 0, message: error.message });
   }
 };

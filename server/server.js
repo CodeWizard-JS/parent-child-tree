@@ -9,7 +9,7 @@ import { dbInit } from "./pgHelper/init.js";
 
 
 const app = express();
-const port = process.env.port || 4500;
+const port = process.env.SERVER_PORT || 3000;
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
