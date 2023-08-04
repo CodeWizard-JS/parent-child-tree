@@ -3,7 +3,11 @@ import * as member from "../models/index.js";
 export const listAllMembers = async (req, res) => {
   try {
     const members = await member.listAllMembers();
-    res.json(members);
+    res.json({
+      success: 1,
+      message: "Fetched all Members successfully",
+      data: members,
+    });
   } catch (error) {
     console.log("listAllMembers-error", error.message);
     res.status(500).json({ error: error.message });

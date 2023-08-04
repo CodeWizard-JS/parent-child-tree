@@ -1,0 +1,53 @@
+[
+    {
+        "id": 1,
+        "name": "John Doe",
+        "age": 70,
+        "children": [
+            2,
+            5
+        ]
+    },
+    {
+        "id": 2,
+        "name": "Alice Doe",
+        "age": 45,
+        "children": [
+            3,
+            4
+        ]
+    },
+    {
+        "id": 3,
+        "name": "Ella Doe",
+        "age": 20,
+        "children": []
+    },
+    {
+        "id": 4,
+        "name": "Bob Doe",
+        "age": 18,
+        "children": []
+    },
+    {
+        "id": 5,
+        "name": "Jane Doe",
+        "age": 68,
+        "children": [
+            6,
+            7
+        ]
+    },
+    {
+        "id": 6,
+        "name": "Chris Doe",
+        "age": 40,
+        "children": []
+    },
+    {
+        "id": 7,
+        "name": "Diana Doe",
+        "age": 35,
+        "children": []
+    }
+]

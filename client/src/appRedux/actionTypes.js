@@ -1,0 +1,12 @@
+export const FETCH_REQUEST = "fetch_request";
+export const ADD_REQUEST = "add_request";
+export const UPDATE_REQUEST = "update_request";
+export const DELETE_REQUEST = "delete_request";
+export const FETCH_SUCCESS = "fetch_success";
+export const FETCH_FAILURE = "fetch_failure";
+export const ADD_FAILURE = "add_failure";
+export const ADD_SUCCESS = "add_success";
+export const UPDATE_FAILURE = "update_failure";
+export const UPDATE_SUCCESS = "fetch_success";
+export const DELETE_SUCCESS = "delete_success";
+export const DELETE_FAILURE = "delete_failure";
