@@ -1,0 +1,127 @@
+{
+	"info": {
+		"_postman_id": "b830e63e-415c-4ea9-8081-9b26e1c4e7b5",
+		"name": "Parent-Child Tree View",
+		"description": "This collection has all of the needed APIs for the parent-child-app",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "26508598"
+	},
+	"item": [
+		{
+			"name": "Local - List",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "http://localhost:3001/family/members/list",
+				"description": "Will get list of all members in the family with their tree reference."
+			},
+			"response": []
+		},
+		{
+			"name": "Live - List",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "https://tree-view-api.vercel.app/family/members/list",
+				"description": "Will get list of all members in the family with their tree reference."
+			},
+			"response": []
+		},
+		{
+			"name": "Local - Create",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\"name\": \"Test 3\",\r\n\"age\": 2,\r\n\"parent\": null\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:3000/family/members/create",
+				"description": "Creates a member in the tree, based on the input given."
+			},
+			"response": []
+		},
+		{
+			"name": "Live - Create",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\"name\": \"Test 1\",\r\n\"age\": 2,\r\n\"parent\": \"32b248b7-c8ee-4265-90d4-1dd77f9cef45\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "https://tree-view-api.vercel.app/family/members/create",
+				"description": "Creates a member in the tree, based on the input given."
+			},
+			"response": []
+		},
+		{
+			"name": "Local - Update",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\"name\": \"This is updated\",\r\n\"age\": 23,\r\n\"parent\": \"4ff19b18-bf26-4a51-b3b9-d4d2e520573f\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:3001/family/members/046a90db-64d3-4596-83fd-13455892cc37",
+				"description": "Update the member's info with id. Parent child relationship cannot be modified."
+			},
+			"response": []
+		},
+		{
+			"name": "Live - Update",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\"name\": \"This is updated\",\r\n\"age\": 23,\r\n\"parent\": \"4ff19b18-bf26-4a51-b3b9-d4d2e520573f\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "https://tree-view-api.vercel.app/family/members/046a90db-64d3-4596-83fd-13455892cc37",
+				"description": "Update the member's info with id. Parent child relationship cannot be modified."
+			},
+			"response": []
+		},
+		{
+			"name": "Local - Delete",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": "http://localhost:3001/family/members/31070bc0-916a-42d6-88ee-2d564e18c91c",
+				"description": "Deletes the user with the ID given."
+			},
+			"response": []
+		},
+		{
+			"name": "Live - Delete",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": "https://tree-view-api.vercel.appfamily/members/31070bc0-916a-42d6-88ee-2d564e18c91c",
+				"description": "Deletes the user with the ID given."
+			},
+			"response": []
+		}
+	]
+}
