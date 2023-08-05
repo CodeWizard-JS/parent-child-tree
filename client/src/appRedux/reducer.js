@@ -12,15 +12,9 @@ export default function reducer(state = initialState, action) {
         error: null,
       };
     }
-    case types.FETCH_FAILURE: {
-      return { ...state, error: action.error };
-    }
-    case types.ADD_FAILURE: {
-      return { ...state, error: action.error };
-    }
-    case types.UPDATE_FAILURE: {
-      return { ...state, error: action.error };
-    }
+    case types.FETCH_FAILURE: 
+    case types.ADD_FAILURE: 
+    case types.UPDATE_FAILURE: 
     case types.DELETE_FAILURE: {
       return { ...state, error: action.error };
     }

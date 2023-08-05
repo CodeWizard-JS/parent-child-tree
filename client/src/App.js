@@ -9,7 +9,7 @@ import CreateForm from "./Components/MemberForm";
 
 const App = () => {
   const dispatch = useDispatch();
-  const allMembers = useSelector((state) => state.members);
+  const allMembers = useSelector((state) => state);
 
   useEffect(() => {
     dispatch(getAllMembersAction());
@@ -72,8 +72,8 @@ const App = () => {
             Members List
           </Typography>
           <div className="data-container">
-            {allMembers.length
-              ? allMembers.map((member) => (
+            {allMembers.members.length
+              ? allMembers.members.map((member) => (
                   <Accordions member={member} key={member.id} />
                 ))
               : renderNoDataFound()}

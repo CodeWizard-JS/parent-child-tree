@@ -1,7 +1,7 @@
 const validateId = (id) => {
   const validUuidRegex =
     /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/;
-  return id !== null || !validUuidRegex.test(id);
+  return !(validUuidRegex.test(id) || id === null);
 };
 
 export const validateCreateData = (req, res, next) => {
@@ -20,6 +20,7 @@ export const validateCreateData = (req, res, next) => {
       message: "Invalid data types for Create operation.",
     });
   }
+
   if (validateId(parent)) {
     return res.status(400).json({
       success: 0,

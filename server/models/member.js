@@ -7,7 +7,7 @@ export const listAllMembers = async () => {
       parent.id AS id,
       parent.name AS name,
       parent.age AS age,
-      NULL AS parent_id,
+      NULL AS parent,
       parent.created_at AS created_at,
       parent.updated_at AS updated_at,
       json_agg(child.id) AS children
@@ -62,7 +62,7 @@ export const createMember = async ({ name, age, parent }) => {
 export const updateMember = async ({ name, age, parent, id }) => {
   const updatedMember = await pool.query(`
     UPDATE family_members
-    SET name = '${name}', age = ${age}, parent = '${parent}', updated_at = current_timestamp
+    SET name = '${name}', age = ${age}, parent = ${parent !== null ? `'${parent}'` : parent}, updated_at = current_timestamp
     WHERE id = '${id}'
     RETURNING id, name, age, parent, created_at, updated_at
   `);

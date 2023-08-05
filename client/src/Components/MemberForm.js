@@ -30,7 +30,6 @@ const MemberForm = ({ data, isEdit, Trigger }) => {
         updateMemberAction({
           ...formData,
           age: Number(formData.age),
-          parent: formData.parent === "" ? null : formData.parent,
         })
       );
     } else {
@@ -85,28 +84,30 @@ const MemberForm = ({ data, isEdit, Trigger }) => {
               required
             />
           </Box>
-          <Box mt={2}>
-            <FormControl fullWidth margin="dense" variant="standard">
-              <InputLabel id="age-label">Parent</InputLabel>
-              <Select
-                value={formData.parent}
-                onChange={handleChange}
-                variant="standard"
-                labelId="age-label"
-                name="parent"
-                fullWidth
-              >
-                <MenuItem value={""}> --Select Parent-- </MenuItem>
-                {selectList.map((member) =>
-                  member.id === data?.id ? null : (
-                    <MenuItem value={member.id} key={member.id}>
-                      {member.name}
-                    </MenuItem>
-                  )
-                )}
-              </Select>
-            </FormControl>
-          </Box>
+          {isEdit ? null : (
+            <Box mt={2}>
+              <FormControl fullWidth margin="dense" variant="standard">
+                <InputLabel id="age-label">Parent</InputLabel>
+                <Select
+                  value={formData.parent}
+                  onChange={handleChange}
+                  variant="standard"
+                  labelId="age-label"
+                  name="parent"
+                  fullWidth
+                >
+                  <MenuItem value={""}> --Select Parent-- </MenuItem>
+                  {selectList.map((member) =>
+                    member.id === data?.id ? null : (
+                      <MenuItem value={member.id} key={member.id}>
+                        {member.name}
+                      </MenuItem>
+                    )
+                  )}
+                </Select>
+              </FormControl>
+            </Box>
+          )}
           <Box mt={2} textAlign="right">
             <Button type="submit" variant="contained">
               Submit
