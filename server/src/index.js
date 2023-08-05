@@ -15,14 +15,20 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use(cors());
 
-app.use("/family", familyRouter);
-
-app.listen(port, async () => {
-  try {
-    console.log(`Family members tree app listening on port ${port}!`);
-    await dbInit();
-    console.log("All tables created successfully");
-  } catch (error) {
-    console.log("app.listen error", error);
-  }
+app.get("/", (req, res) => {
+  res.send("Api running");
 });
+
+app.use("/family", familyRouter);
+dbInit();
+// app.listen(port, async () => {
+//   try {
+//     console.log(`Family members tree app listening on port ${port}!`);
+//     await dbInit();
+//     console.log("All tables created successfully");
+//   } catch (error) {
+//     console.log("app.listen error", error);
+//   }
+// });
+
+export default app;
