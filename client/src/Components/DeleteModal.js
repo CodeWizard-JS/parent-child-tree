@@ -1,18 +1,26 @@
 import React from "react";
+import { useDispatch } from "react-redux";
 import { Box, Button, Typography } from "@mui/material";
 import WarningRoundedIcon from "@mui/icons-material/WarningRounded";
 import CustomeDialog from "./CustomDialog";
 import { useModalState } from "../utils/hooks";
+import { deleteMemberAction } from "../appRedux/actions";
 
 const DeleteModal = ({ Trigger, member }) => {
-  const { showModal, toggleCreateModal } = useModalState();
+  const dispatch = useDispatch();
+  const { showModal, toggleModal } = useModalState();
+
+  const handleDelete = () => {
+    dispatch(deleteMemberAction(member.id));
+    toggleModal();
+  };
 
   return (
     <div onClick={(e) => e.stopPropagation()}>
-      <Trigger onClick={toggleCreateModal} />
+      <Trigger onClick={toggleModal} />
       <CustomeDialog
         open={showModal}
-        close={toggleCreateModal}
+        close={toggleModal}
         title={"Are you sure?"}
       >
         <Box
@@ -29,7 +37,7 @@ const DeleteModal = ({ Trigger, member }) => {
           <Typography fontSize={10}>
             Note: This deletion will not affect the children.
           </Typography>
-          <Button variant="contained" color="error">
+          <Button variant="contained" color="error" onClick={handleDelete}>
             Delete
           </Button>
         </Box>

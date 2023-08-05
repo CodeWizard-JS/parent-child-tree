@@ -1,3 +1,9 @@
+const validateId = (id) => {
+  const validUuidRegex =
+    /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/;
+  return id !== null || !validUuidRegex.test(id);
+};
+
 export const validateCreateData = (req, res, next) => {
   const { parent, name, age } = req.body;
 
@@ -8,14 +14,16 @@ export const validateCreateData = (req, res, next) => {
     });
   }
 
-  if (
-    typeof name !== "string" ||
-    typeof age !== "number" ||
-    (parent === null || typeof parent !== "string")
-  ) {
+  if (typeof name !== "string" || typeof age !== "number") {
     return res.status(400).json({
       success: 0,
       message: "Invalid data types for Create operation.",
+    });
+  }
+  if (validateId(parent)) {
+    return res.status(400).json({
+      success: 0,
+      message: "Invalid or missing parent ID.",
     });
   }
   next();
@@ -29,14 +37,16 @@ export const validateUpdateData = (req, res, next) => {
       message: "Missing required data for Update operation.",
     });
   }
-  if (
-    typeof name !== "string" ||
-    typeof age !== "number" ||
-    (parent === null || typeof parent !== "string")
-  ) {
+  if (typeof name !== "string" || typeof age !== "number") {
     return res.status(400).json({
       success: 0,
       message: "Invalid data types for Update operation.",
+    });
+  }
+  if (validateId(parent)) {
+    return res.status(400).json({
+      success: 0,
+      message: "Invalid or missing parent ID.",
     });
   }
   next();
@@ -44,9 +54,7 @@ export const validateUpdateData = (req, res, next) => {
 
 export const validateParamId = (req, res, next) => {
   const { id } = req.params;
-  const validUuidRegex =
-    /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/;
-  if (!id || !validUuidRegex.test(id)) {
+  if (validateId(id)) {
     return res.status(400).json({
       success: 0,
       message: "Invalid or missing ID.",

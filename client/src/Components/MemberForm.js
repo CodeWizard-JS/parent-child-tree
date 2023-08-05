@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import TextField from "@mui/material/TextField";
 import {
   Box,
@@ -11,12 +11,13 @@ import {
 } from "@mui/material";
 import { useModalState } from "../utils/hooks";
 import { addMemberAction, updateMemberAction } from "../appRedux/actions";
-  import CustomeDialog from "./CustomDialog";
+import CustomeDialog from "./CustomDialog";
 
 const MemberForm = ({ data, isEdit, Trigger }) => {
+  const dispatch = useDispatch();
   const selectList = useSelector((state) => state.selectList);
-  const { showModal, toggleCreateModal } = useModalState();
-  const [formData, setFormData] = useState({ name: "", age: "", parent: null });
+  const { showModal, toggleModal } = useModalState();
+  const [formData, setFormData] = useState({ name: "", age: "", parent: "" });
 
   const handleChange = (e) => {
     setFormData((p) => ({ ...p, [e.target.name]: e.target.value }));
@@ -25,29 +26,40 @@ const MemberForm = ({ data, isEdit, Trigger }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (isEdit) {
-      dispatch(updateMemberAction(formData));
+      dispatch(
+        updateMemberAction({
+          ...formData,
+          age: Number(formData.age),
+          parent: formData.parent === "" ? null : formData.parent,
+        })
+      );
     } else {
-      dispatch(addMemberAction(formData));
+      dispatch(
+        addMemberAction({
+          ...formData,
+          age: Number(formData.age),
+          parent: formData.parent === "" ? null : formData.parent,
+        })
+      );
     }
+    toggleModal();
   };
 
   useEffect(() => {
-    if (isEdit) {
-      if (!showModal) {
-        setFormData({ name: "", age: "", parent: "" });
-      } else {
-        setFormData(data);
-      }
+    if (!showModal) {
+      setFormData({ name: "", age: "", parent: "" });
+    } else if (isEdit) {
+      setFormData(data);
     }
   }, [isEdit, showModal]);
 
   return (
     <>
-      <Trigger onClick={toggleCreateModal} />
+      <Trigger onClick={toggleModal} />
       <CustomeDialog
         open={showModal}
         title={isEdit ? "Edit Member" : "Create Member"}
-        close={toggleCreateModal}
+        close={toggleModal}
       >
         <form onSubmit={handleSubmit}>
           <Box mt={2}>
@@ -85,9 +97,13 @@ const MemberForm = ({ data, isEdit, Trigger }) => {
                 fullWidth
               >
                 <MenuItem value={""}> --Select Parent-- </MenuItem>
-                {selectList.map((member) => (
-                  <MenuItem value={member.id}>{member.name}</MenuItem>
-                ))}
+                {selectList.map((member) =>
+                  member.id === data?.id ? null : (
+                    <MenuItem value={member.id} key={member.id}>
+                      {member.name}
+                    </MenuItem>
+                  )
+                )}
               </Select>
             </FormControl>
           </Box>

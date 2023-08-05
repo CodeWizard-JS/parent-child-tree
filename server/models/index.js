@@ -1,1 +1,1 @@
-export * from './member.js'
+export * from "./member.js";

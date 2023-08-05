@@ -15,6 +15,8 @@ function* addMember(action) {
   try {
     yield call(effects.addMemberAPIEffect, action.payload);
     yield put({ type: types.ADD_SUCCESS, payload: action.payload });
+    const members = yield call(effects.getAllMembersAPIEffect);
+    yield put({ type: types.FETCH_SUCCESS, payload: members });
   } catch (err) {
     yield put({ type: types.ADD_FAILURE, error: err });
   }
@@ -24,6 +26,8 @@ function* updateMember(action) {
   try {
     yield call(effects.updateMemberAPIEffect, action.payload);
     yield put({ type: types.UPDATE_SUCCESS, payload: action.payload });
+    const members = yield call(effects.getAllMembersAPIEffect);
+    yield put({ type: types.FETCH_SUCCESS, payload: members });
   } catch (err) {
     yield put({ type: types.UPDATE_FAILURE, error: err });
   }
@@ -32,7 +36,9 @@ function* updateMember(action) {
 function* removeMember(action) {
   try {
     yield call(effects.deleteMemberAPIEffect, action.payload);
+    const members = yield call(effects.getAllMembersAPIEffect);
     yield put({ type: types.DELETE_SUCCESS, payload: action.payload });
+    yield put({ type: types.FETCH_SUCCESS, payload: members });
   } catch (err) {
     yield put({ type: types.DELETE_FAILURE, error: err });
   }

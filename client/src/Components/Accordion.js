@@ -10,12 +10,13 @@ import {
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import PersonRemoveRoundedIcon from "@mui/icons-material/PersonRemoveRounded";
 import EditRoundedIcon from "@mui/icons-material/EditRounded";
+import { useChildren } from "../utils/hooks";
 import MemberForm from "./MemberForm";
 import DeleteModal from "./DeleteModal";
 
 const Accordions = ({ member }) => {
-  const { name, age, childrenData, id, ...rest } = member;
-  console.log(`122 data`, member);
+  const { name, age, children: childrenIds, id } = member;
+  const children = useChildren(childrenIds, id);
   const [expanded, setExpanded] = useState(false);
   const [childrensList, setChildrensList] = useState([]);
   const [editData, setEditData] = useState({});
@@ -23,11 +24,11 @@ const Accordions = ({ member }) => {
 
   useEffect(() => {
     if (expanded) {
-      setChildrensList(childrenData ?? []);
+      setChildrensList(children ?? []);
     } else {
       setChildrensList([]);
     }
-  }, [childrenData, expanded]);
+  }, [children, expanded]);
 
   const editFormTrigger = ({ onClick }) => {
     return (
@@ -38,7 +39,7 @@ const Accordions = ({ member }) => {
         onClick={(e) => {
           e.stopPropagation();
           onClick();
-          setEditData({ name, age, childre: childrenData, id, ...rest });
+          setEditData(member);
         }}
       >
         <EditRoundedIcon />
@@ -55,13 +56,40 @@ const Accordions = ({ member }) => {
         onClick={(e) => {
           e.stopPropagation();
           onClick();
-          setDeleteData({ id, name });
+          setDeleteData(member);
         }}
       >
         <PersonRemoveRoundedIcon color="error" />
       </IconButton>
     );
   };
+
+  const renderAccordionContent = () => {
+    return (
+      <>
+        <Box flexGrow={1}>
+          <Box>
+            <Typography style={{ fontWeight: "bold" }}>{name}</Typography>
+            <Typography>Age: {age}</Typography>
+            {childrensList?.length ? (
+              <Typography>Parent of : {childrensList?.length}</Typography>
+            ) : null}
+          </Box>
+        </Box>
+        <Box display="flex" flexDirection="column">
+          <MemberForm data={editData} isEdit={true} Trigger={editFormTrigger} />
+          <DeleteModal Trigger={deleteModalTrigger} member={deleteData} />
+        </Box>
+      </>
+    );
+  };
+  if (!children?.length) {
+    return (
+      <Box display="flex" px={2} py={1}>
+        {renderAccordionContent()}
+      </Box>
+    );
+  }
 
   return (
     <Accordion
@@ -70,19 +98,7 @@ const Accordions = ({ member }) => {
       className="accordian"
     >
       <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-        <Box flexGrow={1}>
-          <Box>
-            <Typography style={{ fontWeight: "bold" }}>{name}</Typography>
-            <Typography>Age: {age}</Typography>
-            {childrenData?.length ? (
-              <Typography>Parent of : {childrenData?.length}</Typography>
-            ) : null}
-          </Box>
-        </Box>
-        <Box display="flex" flexDirection="column">
-          <MemberForm data={editData} isEdit={true} Trigger={editFormTrigger} />
-          <DeleteModal Trigger={deleteModalTrigger} member={deleteData}/>
-        </Box>
+        {renderAccordionContent()}
       </AccordionSummary>
       {childrensList.length && expanded ? (
         <AccordionDetails>

@@ -1,6 +1,6 @@
 import React from "react";
 import Dialog from "@mui/material/Dialog";
-import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
+import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import { Box, IconButton, Typography } from "@mui/material";
 
 export default function CustomeDialog({ title, close, open, children }) {
@@ -14,10 +14,10 @@ export default function CustomeDialog({ title, close, open, children }) {
             style={{ marginLeft: "10px" }}
             onClick={(e) => {
               e.stopPropagation();
-              close()
+              close();
             }}
           >
-          <CloseRoundedIcon color="primary" />
+            <CloseRoundedIcon color="primary" />
           </IconButton>
         </Box>
         {children}

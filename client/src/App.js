@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Button, Card } from "@mui/material";
+import { Box, Button, Card } from "@mui/material";
 import { AppBar, Toolbar, Typography } from "@mui/material";
 import PersonAddRoundedIcon from "@mui/icons-material/PersonAddRounded";
 import Accordions from "./Components/Accordion";
@@ -27,6 +27,28 @@ const App = () => {
     );
   };
 
+  const renderNoDataFound = () => {
+    return (
+      <Box
+        display="flex"
+        flexDirection="column"
+        justifyContent="center"
+        alignItems="center"
+        my={2}
+        style={{ opacity: "0.2" }}
+      >
+        <img
+          alt="logo"
+          src="./family-tree.png"
+          className="logo"
+          height={100}
+          width={100}
+        />
+        <Typography variant="h5">No Data Found</Typography>
+      </Box>
+    );
+  };
+
   return (
     <div className="parent-wrapper">
       <AppBar position="static" color="transparent">
@@ -50,9 +72,11 @@ const App = () => {
             Members List
           </Typography>
           <div className="data-container">
-            {allMembers.map((member) => (
-              <Accordions member={member} key={member.id} />
-            ))}
+            {allMembers.length
+              ? allMembers.map((member) => (
+                  <Accordions member={member} key={member.id} />
+                ))
+              : renderNoDataFound()}
           </div>
         </Card>
       </div>

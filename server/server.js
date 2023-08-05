@@ -7,7 +7,6 @@ import cors from "cors";
 import familyRouter from "./router/index.js";
 import { dbInit } from "./pgHelper/init.js";
 
-
 const app = express();
 const port = process.env.SERVER_PORT || 3000;
 

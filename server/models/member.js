@@ -2,20 +2,48 @@ import pool from "../pgHelper/index.js";
 import groupBy from "lodash.groupby";
 
 export const listAllMembers = async () => {
-  const members = await pool.query("SELECT * FROM family_members");
+  const firstParentMembers = await pool.query(`
+      SELECT
+      parent.id AS id,
+      parent.name AS name,
+      parent.age AS age,
+      NULL AS parent_id,
+      parent.created_at AS created_at,
+      parent.updated_at AS updated_at,
+      json_agg(child.id) AS children
+      FROM
+        family_members AS parent
+      LEFT JOIN
+        family_members AS child
+      ON
+        child.parent = parent.id
+      WHERE
+        parent.parent IS NULL
+      GROUP BY
+        parent.id;
+  `);
+  const members = await pool.query(`
+      SELECT
+        parent.id AS id,
+        parent.name AS name,
+        parent.age AS age,
+        NULL AS parent_id,
+        parent.created_at AS created_at,
+        parent.updated_at AS updated_at,
+        COALESCE(json_agg(child.id), '[]') AS children
+      FROM
+        family_members AS parent
+      LEFT JOIN
+        family_members AS child
+      ON
+        child.parent = parent.id
+      GROUP BY
+        parent.id;
+  `);
   if (members.rowCount >= 1) {
-    const groupedMembers = groupBy(members.rows, "parent");
-    const modifiedMembers = members.rows
-      .map((member) => {
-        const children = groupedMembers[member.id] ?? [];
-        return { ...member, children };
-      })
-      .filter(
-        (member) => !(member.parent !== null && member.children.length === 0)
-      );
-    return { members: modifiedMembers, list: members.rows };
+    return { members: firstParentMembers.rows, list: members.rows };
   } else {
-    throw new Error({ message: "No data found" });
+    return { members: [], list: [] };
   }
 };
 
@@ -28,7 +56,7 @@ export const createMember = async ({ name, age, parent }) => {
   if (createdMember.rowCount === 1) {
     return createdMember.rows[0];
   } else {
-    throw new Error({ message: "Something went wrong when creating member" });
+    throw new Error("Something went wrong when creating member");
   }
 };
 export const updateMember = async ({ name, age, parent, id }) => {
@@ -41,7 +69,7 @@ export const updateMember = async ({ name, age, parent, id }) => {
   if (updatedMember.rowCount === 1) {
     return updatedMember.rows[0];
   } else {
-    throw new Error({ message: "Something went wrong when updating member" });
+    throw new Error("Something went wrong when updating member");
   }
 };
 export const deleteMember = async (id) => {
@@ -57,6 +85,6 @@ export const deleteMember = async (id) => {
   if (deletedMember.rowCount === 1) {
     return { deletedMember: id, updatedMembers: updatedMember.rows };
   } else {
-    throw new Error({ message: "Something went wrong when deleting member" });
+    throw new Error("Something went wrong when deleting member");
   }
 };
